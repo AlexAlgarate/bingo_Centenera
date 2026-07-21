@@ -51,7 +51,8 @@ function render(): void {
   btnDraw.disabled = allOut;
 
   let html = '';
-  for (const num of state.drawnNumbers) {
+  const sorted = [...state.drawnNumbers].sort((a, b) => a - b);
+  for (const num of sorted) {
     html += `<span class="number drawn">${num}</span>`;
   }
   drawnList.innerHTML = html;
