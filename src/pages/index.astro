@@ -40,6 +40,21 @@ import "../styles/bingo.css";
         Reiniciar
       </button>
     </div>
+
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <div class="modal">
+        <h3>Reiniciar partida</h3>
+        <p>Resuelve la siguiente ecuación para confirmar:</p>
+        <p id="equation" class="equation"></p>
+        <input id="equation-answer" type="number" class="modal-input" placeholder="Resultado" autofocus />
+        <p id="equation-error" class="equation-error hidden">Respuesta incorrecta</p>
+        <div class="modal-actions">
+          <button id="btn-modal-confirm" class="btn btn-primary">Confirmar</button>
+          <button id="btn-modal-cancel" class="btn btn-danger">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
       <script>
       import "../scripts/bingo.ts";
     </script>
