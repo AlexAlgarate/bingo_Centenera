@@ -32,6 +32,12 @@ function drawNumber(): void {
 }
 
 function resetGame(): void {
+  if (
+    !confirm(
+      '¿Estás segura de querer reiniciar la partida? Se perderán todos los números.',
+    )
+  )
+    return;
   saveState(createInitialState());
   render();
 }
