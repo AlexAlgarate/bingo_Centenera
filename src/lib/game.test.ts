@@ -16,16 +16,16 @@ describe('createInitialState', () => {
 });
 
 describe('drawNumber', () => {
-  it('returns a number between 1 and 99', () => {
+  it('returns a number between 1 and 90', () => {
     const state = createInitialState();
     const newState = drawNumber(state);
     expect(newState.drawnNumbers).toHaveLength(1);
     expect(newState.lastNumber).toBeGreaterThanOrEqual(1);
-    expect(newState.lastNumber).toBeLessThanOrEqual(99);
+    expect(newState.lastNumber).toBeLessThanOrEqual(90);
     expect(newState.drawnNumbers[0]).toBe(newState.lastNumber);
   });
 
-  it('produces no duplicate numbers across 99 draws', () => {
+  it('produces no duplicate numbers across 90 draws', () => {
     let state = createInitialState();
     const drawn = new Set<number>();
     for (let i = 0; i < TOTAL_NUMBERS; i++) {
@@ -68,7 +68,7 @@ describe('isGameOver', () => {
     expect(isGameOver(state)).toBe(false);
   });
 
-  it('returns true when all 99 numbers are drawn', () => {
+  it('returns true when all 90 numbers are drawn', () => {
     let state = createInitialState();
     for (let i = 0; i < TOTAL_NUMBERS; i++) {
       state = drawNumber(state);
@@ -82,7 +82,7 @@ describe('isGameOver', () => {
 });
 
 describe('getRemainingNumbers', () => {
-  it('returns all 99 numbers for initial state', () => {
+  it('returns all 90 numbers for initial state', () => {
     const remaining = getRemainingNumbers(createInitialState());
     expect(remaining).toHaveLength(TOTAL_NUMBERS);
     expect(remaining).toEqual(Array.from({ length: TOTAL_NUMBERS }, (_, i) => i + 1));
@@ -116,7 +116,7 @@ describe('edge cases', () => {
     expect(original).toEqual(copy);
   });
 
-  it('can draw all 99 numbers in any order (randomness check)', () => {
+  it('can draw all 90 numbers in any order (randomness check)', () => {
     let state = createInitialState();
     for (let i = 0; i < TOTAL_NUMBERS; i++) {
       state = drawNumber(state);

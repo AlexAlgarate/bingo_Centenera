@@ -3,7 +3,7 @@ export interface BingoState {
   lastNumber: number | null;
 }
 
-export const TOTAL_NUMBERS = 99;
+export const TOTAL_NUMBERS = 90;
 
 export function createInitialState(): BingoState {
   return { drawnNumbers: [], lastNumber: null };

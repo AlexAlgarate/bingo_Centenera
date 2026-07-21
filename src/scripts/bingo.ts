@@ -1,4 +1,9 @@
-import { createInitialState, drawNumber as draw, isGameOver } from '../lib/game';
+import {
+  createInitialState,
+  drawNumber as draw,
+  isGameOver,
+  TOTAL_NUMBERS,
+} from '../lib/game';
 import type { BingoState } from '../lib/game';
 
 const STORAGE_KEY = 'bingo-state';
@@ -58,7 +63,7 @@ function render(): void {
   drawnList.innerHTML = html;
 
   html = '';
-  for (let num = 1; num <= 99; num++) {
+  for (let num = 1; num <= TOTAL_NUMBERS; num++) {
     if (!state.drawnNumbers.includes(num)) {
       html += `<div class="number">${num}</div>`;
     }
