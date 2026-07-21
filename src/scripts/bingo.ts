@@ -32,47 +32,47 @@ function resetGame(): void {
 }
 
 function triggerAnimation(): void {
-  const bola = document.getElementById('bola')!;
-  bola.classList.remove('girar');
-  void bola.offsetWidth;
-  bola.classList.add('girar');
+  const ball = document.getElementById('ball')!;
+  ball.classList.remove('spin');
+  void ball.offsetWidth;
+  ball.classList.add('spin');
 }
 
 function render(): void {
   const state = getState();
-  const bola = document.getElementById('bola')!;
-  const btnSacar = document.getElementById('btn-sacar') as HTMLButtonElement;
-  const salidos = document.getElementById('salidos')!;
-  const grilla = document.getElementById('grilla')!;
+  const ball = document.getElementById('ball')!;
+  const btnDraw = document.getElementById('btn-draw') as HTMLButtonElement;
+  const drawnList = document.getElementById('drawn-list')!;
+  const grid = document.getElementById('grid')!;
 
   const allOut = isGameOver(state);
-  bola.textContent =
-    state.lastNumber !== null ? String(state.lastNumber) : allOut ? 'Fin' : '-';
-  btnSacar.disabled = allOut;
+  ball.textContent =
+    state.lastNumber !== null ? String(state.lastNumber) : allOut ? 'End' : '-';
+  btnDraw.disabled = allOut;
 
   const sorted = [...state.drawnNumbers].sort((a, b) => a - b);
   let html = '';
-  for (let fila = 0; fila < 5; fila++) {
+  for (let row = 0; row < 5; row++) {
     html += '<div>';
-    for (let i = fila * 20; i < (fila + 1) * 20 && i < sorted.length; i++) {
-      html += `<span class="numero bg-success text-white">${sorted[i]}</span>`;
+    for (let i = row * 20; i < (row + 1) * 20 && i < sorted.length; i++) {
+      html += `<span class="number drawn">${sorted[i]}</span>`;
     }
     html += '</div>';
   }
-  salidos.innerHTML = html;
+  drawnList.innerHTML = html;
 
   html = '';
   for (let num = 1; num <= 99; num++) {
     const cls = state.drawnNumbers.includes(num)
-      ? 'bg-success text-white'
-      : 'bg-secondary text-white';
-    html += `<div class="col-1 numero ${cls}">${num}</div>`;
+      ? 'drawn'
+      : 'pending';
+    html += `<div class="number ${cls}">${num}</div>`;
   }
-  grilla.innerHTML = html;
+  grid.innerHTML = html;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('btn-sacar')!.addEventListener('click', drawNumber);
-  document.getElementById('btn-reiniciar')!.addEventListener('click', resetGame);
+  document.getElementById('btn-draw')!.addEventListener('click', drawNumber);
+  document.getElementById('btn-reset')!.addEventListener('click', resetGame);
   render();
 });
