@@ -20,25 +20,20 @@ import "../styles/bingo.css";
   <body>
     <div class="container">
       <h1>Bingo Centenera</h1>
-
       <div id="ball" class="bingo-ball">-</div>
-
       <div class="controls">
         <button id="btn-draw" class="btn btn-primary btn-draw">
           Sacar número
         </button>
       </div>
-
-      
-      <div>
-         <h4>Números pendientes</h4>
+      <div class="grid-numbers">
+        <h4 class="pending-numbers-title">Números pendientes</h4>
         <div id="grid" class="number-grid"></div>
-
       </div>
-    </div>
-    <div class="drawn-numbers">
-        <h4 class="drawn-title">Números sacados</h4>
-        <div id="drawn-list" class="number-grid"></div>
+      <div class="grid-numbers">
+          <h4 class="drawn-title">Números sacados</h4>
+          <div id="drawn-list" class="number-grid"></div>
+      </div>
     </div>
     <div class="reset-container">
       <button id="btn-reset" class="btn btn-danger">
