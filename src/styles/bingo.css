@@ -16,7 +16,7 @@ h1 {
 }
 
 .controls {
-  margin-bottom: 0.75rem;
+  margin: 2rem;
 }
 
 .btn {
@@ -79,7 +79,7 @@ h4 {
   animation: spin 0.8s ease-in-out;
 }
 
-@keyframes spin {
+/* @keyframes spin {
   0% {
     transform: rotate(0deg) scale(0.5);
     opacity: 0;
@@ -91,7 +91,7 @@ h4 {
   100% {
     transform: rotate(360deg) scale(1);
   }
-}
+} */
 
 .number {
   width: 40px;
@@ -103,11 +103,18 @@ h4 {
   margin: 2px;
   display: inline-block;
   font-size: 1.1rem;
+  background-color: #9ca3af;
+  color: white;
 }
 
 .drawn-list {
   max-width: 450px;
   margin: 1rem auto 0 auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin-top: 1rem;
+  margin: 1.5rem;
 }
 
 .drawn {
@@ -118,4 +125,14 @@ h4 {
 .pending {
   background-color: #9ca3af;
   color: white;
+}
+
+.drawn-numbers {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.drawn-title {
+  text-align: center;
 }

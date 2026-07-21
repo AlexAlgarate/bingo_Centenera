@@ -50,23 +50,17 @@ function render(): void {
     state.lastNumber !== null ? String(state.lastNumber) : allOut ? 'End' : '-';
   btnDraw.disabled = allOut;
 
-  const sorted = [...state.drawnNumbers].sort((a, b) => a - b);
   let html = '';
-  for (let row = 0; row < 5; row++) {
-    html += '<div>';
-    for (let i = row * 20; i < (row + 1) * 20 && i < sorted.length; i++) {
-      html += `<span class="number drawn">${sorted[i]}</span>`;
-    }
-    html += '</div>';
+  for (const num of state.drawnNumbers) {
+    html += `<span class="number drawn">${num}</span>`;
   }
   drawnList.innerHTML = html;
 
   html = '';
   for (let num = 1; num <= 99; num++) {
-    const cls = state.drawnNumbers.includes(num)
-      ? 'drawn'
-      : 'pending';
-    html += `<div class="number ${cls}">${num}</div>`;
+    if (!state.drawnNumbers.includes(num)) {
+      html += `<div class="number">${num}</div>`;
+    }
   }
   grid.innerHTML = html;
 }
