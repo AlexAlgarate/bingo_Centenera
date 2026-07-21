@@ -127,11 +127,6 @@ h4 {
   color: white;
 }
 
-.pending {
-  background-color: #9ca3af;
-  color: white;
-}
-
 .drawn-numbers {
   display: flex;
   flex-direction: column;
