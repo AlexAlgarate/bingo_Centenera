@@ -24,24 +24,26 @@ import "../styles/bingo.css";
       <div id="ball" class="bingo-ball">-</div>
 
       <div class="controls">
-        <button id="btn-draw" class="btn btn-primary">
+        <button id="btn-draw" class="btn btn-primary btn-draw">
           Sacar número
-        </button>
-        <button id="btn-reset" class="btn btn-danger">
-          Reiniciar
         </button>
       </div>
 
       
       <div>
-         <h4 class="pending-numbers-title">Números pendientes</h4>
-        <div id="grid"></div>
+         <h4>Números pendientes</h4>
+        <div id="grid" class="number-grid"></div>
 
       </div>
     </div>
     <div class="drawn-numbers">
         <h4 class="drawn-title">Números sacados</h4>
-        <div id="drawn-list" class="drawn-list"></div>
+        <div id="drawn-list" class="number-grid"></div>
+    </div>
+    <div class="reset-container">
+      <button id="btn-reset" class="btn btn-danger">
+        Reiniciar
+      </button>
     </div>
       <script>
       import "../scripts/bingo.ts";

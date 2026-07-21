@@ -16,17 +16,25 @@ h1 {
 }
 
 .controls {
-  margin: 2rem;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
 }
 
 .btn {
   font-weight: 700;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
   font-size: 1.125rem;
   border: none;
   cursor: pointer;
   display: inline-block;
+}
+
+.btn-draw {
+  min-width: 220px;
+  padding: 1rem 1.75rem;
+  font-size: 1.25rem;
 }
 
 .btn-primary {
@@ -103,21 +111,17 @@ h4 {
   color: white;
 }
 
-#grid {
+.number-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.5rem;
-  margin: 1.5rem;
-}
-
-.drawn-list {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.75rem;
+  padding: 0.75rem;
   max-width: 768px;
-  margin: 1rem auto 0 auto;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 0.5rem;
-  margin: 1.5rem;
+  margin: 1.5rem auto;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 1rem;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
 }
 
 .drawn {
@@ -125,13 +129,21 @@ h4 {
   color: white;
 }
 
-.drawn-numbers {
+.drawn-numbers,
+.pending-numbers {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.drawn-title {
+.reset-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0 3rem;
+}
+
+.drawn-title,
+.pending-numbers-title {
   text-align: center;
 }
