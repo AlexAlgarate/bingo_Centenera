@@ -167,13 +167,13 @@ h1 {
 }
 
 .drawn {
-  background-color: rgba(200, 210, 229, 0.3);
+  background-color: rgba(8, 206, 81, 0.6);
   box-shadow: 3px 4px 5px rgba(200, 210, 229, 0.9);
   color: rgb(0, 0, 0);
 }
 
 .last-number {
-  background-color: #08ce51;
+  background-color: rgb(8, 206, 81);
   color: white;
 }
 
