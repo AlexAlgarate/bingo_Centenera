@@ -1,9 +1,4 @@
-import {
-  createInitialState,
-  drawNumber,
-  isGameOver,
-  TOTAL_NUMBERS,
-} from '../lib/game';
+import { createInitialState, drawNumber, isGameOver, TOTAL_NUMBERS } from '../lib/game';
 import type { BingoState } from '../lib/game';
 import { generateEquation } from '../lib/equations';
 import type { Equation } from '../lib/equations';
@@ -75,9 +70,10 @@ const handleConfirmReset = (): void => {
   const error = $('equation-error');
 
   const answer = input.value.trim();
-  const isValidAnswer = /^\d+$/.test(answer)
-    && currentEquation !== null
-    && Number(answer) === currentEquation.answer;
+  const isValidAnswer =
+    /^\d+$/.test(answer) &&
+    currentEquation !== null &&
+    Number(answer) === currentEquation.answer;
 
   if (!isValidAnswer) {
     input.className = 'modal-input error';

@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -53,6 +55,8 @@ h1 {
 
 .btn-primary {
   background-color: #22c55e;
+  box-shadow: 3px 3px 5px rgba(15, 23, 42, 0.4);
+
   color: white;
 }
 
@@ -62,6 +66,8 @@ h1 {
 
 .btn-danger {
   background-color: #ef4444;
+  box-shadow: 3px 3px 5px rgba(15, 23, 42, 0.4);
+
   color: white;
 }
 
@@ -147,7 +153,8 @@ h1 {
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
-  background-color: #9ca3af;
+  background-color: rgb(156, 163, 175);
+  box-shadow: 3px 4px 5px rgba(156, 163, 175, 0.6);
   color: white;
 }
 
@@ -160,6 +167,12 @@ h1 {
 }
 
 .drawn {
+  background-color: rgba(200, 210, 229, 0.3);
+  box-shadow: 3px 4px 5px rgba(200, 210, 229, 0.9);
+  color: rgb(0, 0, 0);
+}
+
+.last-number {
   background-color: #08ce51;
   color: white;
 }
