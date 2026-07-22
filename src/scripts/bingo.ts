@@ -190,7 +190,7 @@ const trapFocus = (e: KeyboardEvent): void => {
 const initializeTheme = (): void => {
   const stored = localStorage.getItem('theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = stored || (prefersDark ? 'dark' : 'light');
+  const theme: 'dark' | 'light' = (stored as 'dark' | 'light') || (prefersDark ? 'dark' : 'light');
   applyTheme(theme);
 };
 
@@ -204,8 +204,8 @@ const applyTheme = (theme: 'dark' | 'light'): void => {
 };
 
 const toggleTheme = (): void => {
-  const isDarkMode = !document.body.classList.contains('light-mode');
-  applyTheme(isDarkMode ? 'light' : 'dark');
+  const isLightMode = document.body.classList.contains('light-mode');
+  applyTheme(isLightMode ? 'dark' : 'light');
 };
 
 document.addEventListener('DOMContentLoaded', () => {
