@@ -156,11 +156,7 @@ h1 {
 .bingo-ball {
   width: 200px;
   height: 200px;
-  background: radial-gradient(
-    circle at 30% 30%,
-    var(--text-primary),
-    var(--text-tertiary)
-  );
+  background: radial-gradient(circle at 30% 30%, #f9fafb, #9ca3af);
   border-radius: 50%;
   display: flex;
   align-items: center;
