@@ -15,6 +15,8 @@ import "../styles/bingo.css";
     <meta property="og:image" content="https://bingo-centenera.pages.dev/og-image.svg" />
     <meta property="og:url" content="https://bingo-centenera.pages.dev" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet" />
   </head>
   <body>
@@ -27,13 +29,14 @@ import "../styles/bingo.css";
         </button>
       </div>
       <div class="grid-numbers">
-        <h4 class="pending-numbers-title">Números pendientes</h4>
+        <h4>Números pendientes</h4>
         <div id="grid" class="number-grid"></div>
       </div>
       <div class="grid-numbers">
-          <h4 class="drawn-title">Números sacados</h4>
-          <div id="drawn-list" class="number-grid"></div>
+        <h4>Números sacados</h4>
+        <div id="drawn-list" class="number-grid"></div>
       </div>
+      <p id="game-over-msg" class="game-over-message hidden"></p>
     </div>
     <div class="reset-container">
       <button id="btn-reset" class="btn btn-danger">
@@ -41,12 +44,27 @@ import "../styles/bingo.css";
       </button>
     </div>
 
-    <div id="modal-overlay" class="modal-overlay hidden">
-      <div class="modal">
-        <h3>Reiniciar partida</h3>
+    <div
+      id="modal-overlay"
+      class="modal-overlay hidden"
+    >
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <h3 id="modal-title">Reiniciar partida</h3>
+          <button id="btn-new-equation" class="btn-icon" title="Nueva ecuación" aria-label="Generar nueva ecuación">↻</button>
+        </div>
         <p>Resuelve la siguiente ecuación para confirmar:</p>
         <p id="equation" class="equation"></p>
-        <input id="equation-answer" type="number" class="modal-input" placeholder="Resultado" autofocus />
+        <input
+          id="equation-answer"
+          type="text"
+          inputmode="numeric"
+          class="modal-input"
+          placeholder="Resultado"
+          autocomplete="off"
+          aria-describedby="equation-error"
+          aria-invalid="false"
+        />
         <p id="equation-error" class="equation-error hidden">Respuesta incorrecta</p>
         <div class="modal-actions">
           <button id="btn-modal-confirm" class="btn btn-primary">Confirmar</button>
@@ -55,7 +73,7 @@ import "../styles/bingo.css";
       </div>
     </div>
 
-      <script>
+    <script>
       import "../scripts/bingo.ts";
     </script>
   </body>

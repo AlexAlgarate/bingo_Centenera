@@ -1,103 +1,87 @@
 import {
   createInitialState,
-  drawNumber as draw,
+  drawNumber,
   isGameOver,
   TOTAL_NUMBERS,
 } from '../lib/game';
 import type { BingoState } from '../lib/game';
+import { generateEquation } from '../lib/equations';
+import type { Equation } from '../lib/equations';
+import { loadState, saveState } from '../lib/storage';
 
-const STORAGE_KEY = 'bingo-state';
+function $(id: string): HTMLElement {
+  const el = document.getElementById(id);
+  if (!el) throw new Error(`Element #${id} not found`);
+  return el;
+}
 
-function getState(): BingoState {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch {
-    // ignore
+function $btn(id: string): HTMLButtonElement {
+  return $(id) as HTMLButtonElement;
+}
+
+function $inp(id: string): HTMLInputElement {
+  return $(id) as HTMLInputElement;
+}
+
+let currentEquation: Equation | null = null;
+let previousFocus: HTMLElement | null = null;
+let isDrawing = false;
+
+function handleDrawClick(): void {
+  if (isDrawing) return;
+  isDrawing = true;
+
+  const state = loadState();
+  const newState = drawNumber(state);
+  if (newState === state) {
+    isDrawing = false;
+    return;
   }
-  return createInitialState();
-}
-
-function saveState(state: BingoState): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function drawNumber(): void {
-  const state = getState();
-  const newState = draw(state);
-  if (newState === state) return;
   saveState(newState);
-  render();
+  render(newState);
   triggerAnimation();
-}
+  $btn('btn-draw').disabled = true;
 
-let equationAnswer = 0;
-
-function generateEquation(): string {
-  const isSimple = Math.random() < 0.35;
-  if (isSimple) {
-    const a = Math.floor(Math.random() * 40) + 3;
-    const b = Math.floor(Math.random() * 25) + 2;
-    const opIx = Math.floor(Math.random() * 3);
-    const ops = ['+', '−', '·'];
-    const op = ops[opIx];
-    let result: number;
-    if (op === '+') result = a + b;
-    else if (op === '−') { result = a > b ? a - b : b - a; }
-    else result = a * b;
-    const hideLeft = Math.random() < 0.5;
-    if (op === '−') {
-      if (a > b) {
-        equationAnswer = hideLeft ? a : b;
-        return hideLeft ? `x − ${b} = ${result}` : `${a} − x = ${result}`;
-      } else {
-        equationAnswer = hideLeft ? b : a;
-        return hideLeft ? `x − ${a} = ${result}` : `${b} − x = ${result}`;
-      }
-    } else {
-      equationAnswer = hideLeft ? a : b;
-      return hideLeft ? `x ${op} ${b} = ${result}` : `${a} ${op} x = ${result}`;
-    }
-  } else {
-    const a = Math.floor(Math.random() * 8) + 2;
-    const x = Math.floor(Math.random() * 25) + 2;
-    const add = Math.random() < 0.5;
-    let b: number, result: number;
-    if (add) {
-      b = Math.floor(Math.random() * 40) + 1;
-      result = a * x + b;
-    } else {
-      b = Math.floor(Math.random() * (a * x - 1)) + 1;
-      result = a * x - b;
-    }
-    const op = add ? '+' : '−';
-    equationAnswer = x;
-    return `${a}x ${op} ${b} = ${result}`;
-  }
+  setTimeout(() => {
+    isDrawing = false;
+    $btn('btn-draw').disabled = isGameOver(loadState());
+  }, 300);
 }
 
 function openResetModal(): void {
-  const overlay = document.getElementById('modal-overlay')!;
-  const equation = document.getElementById('equation')!;
-  const input = document.getElementById('equation-answer') as HTMLInputElement;
-  const error = document.getElementById('equation-error')!;
-
-  equation.textContent = generateEquation();
+  previousFocus = document.activeElement as HTMLElement;
+  const overlay = $('modal-overlay');
+  const eq = generateEquation();
+  currentEquation = eq;
+  $('equation').textContent = eq.text;
+  const input = $inp('equation-answer');
   input.value = '';
-  error.classList.add('hidden');
+  input.className = 'modal-input';
+  input.setAttribute('aria-invalid', 'false');
+  $('equation-error').classList.add('hidden');
   overlay.classList.remove('hidden');
   input.focus();
 }
 
 function closeResetModal(): void {
-  document.getElementById('modal-overlay')!.classList.add('hidden');
+  $('modal-overlay').classList.add('hidden');
+  currentEquation = null;
+  previousFocus?.focus();
+  previousFocus = null;
 }
 
-function confirmReset(): void {
-  const input = document.getElementById('equation-answer') as HTMLInputElement;
-  const error = document.getElementById('equation-error')!;
+function handleConfirmReset(): void {
+  const input = $inp('equation-answer');
+  const error = $('equation-error');
 
-  if (Number(input.value) !== equationAnswer) {
+  const answer = input.value.trim();
+  const isValidAnswer = /^\d+$/.test(answer)
+    && currentEquation !== null
+    && Number(answer) === currentEquation.answer;
+
+  if (!isValidAnswer) {
+    input.className = 'modal-input error';
+    input.setAttribute('aria-invalid', 'true');
     error.classList.remove('hidden');
     input.focus();
     input.select();
@@ -105,62 +89,121 @@ function confirmReset(): void {
   }
 
   closeResetModal();
-  saveState(createInitialState());
-  render();
+  const newState = createInitialState();
+  saveState(newState);
+  render(newState);
 }
 
-function resetGame(): void {
-  openResetModal();
+function handleNewEquation(): void {
+  const eq = generateEquation();
+  currentEquation = eq;
+  $('equation').textContent = eq.text;
+  const input = $inp('equation-answer');
+  input.value = '';
+  input.className = 'modal-input';
+  input.setAttribute('aria-invalid', 'false');
+  $('equation-error').classList.add('hidden');
+  input.focus();
 }
 
 function triggerAnimation(): void {
-  const ball = document.getElementById('ball')!;
+  const ball = $('ball');
   ball.classList.remove('spin');
   void ball.offsetWidth;
   ball.classList.add('spin');
 }
 
-function render(): void {
-  const state = getState();
-  const ball = document.getElementById('ball')!;
-  const btnDraw = document.getElementById('btn-draw') as HTMLButtonElement;
-  const drawnList = document.getElementById('drawn-list')!;
-  const grid = document.getElementById('grid')!;
+function render(state: BingoState): void {
+  const ball = $('ball');
+  const btnDraw = $btn('btn-draw');
+  const drawnList = $('drawn-list');
+  const grid = $('grid');
+  const gameOverMsg = $('game-over-msg');
 
   const allOut = isGameOver(state);
-  ball.textContent =
-    state.lastNumber !== null ? String(state.lastNumber) : allOut ? 'End' : '-';
+  ball.textContent = allOut
+    ? 'End'
+    : state.lastNumber !== null
+      ? String(state.lastNumber)
+      : '-';
   btnDraw.disabled = allOut;
 
+  if (allOut) {
+    gameOverMsg.textContent = '¡Juego terminado!';
+    gameOverMsg.classList.remove('hidden');
+  } else {
+    gameOverMsg.classList.add('hidden');
+  }
+
+  const drawn = new Set(state.drawnNumbers);
   let html = '';
-  const sorted = [...state.drawnNumbers].sort((a, b) => a - b);
+  const sorted = [...state.drawnNumbers].sort((a: number, b: number) => a - b);
   for (const num of sorted) {
-    html += `<span class="number drawn">${num}</span>`;
+    html += `<span class="number drawn" aria-label="Número ${num}">${num}</span>`;
   }
   drawnList.innerHTML = html;
 
   html = '';
   for (let num = 1; num <= TOTAL_NUMBERS; num++) {
-    if (!state.drawnNumbers.includes(num)) {
-      html += `<div class="number">${num}</div>`;
+    if (!drawn.has(num)) {
+      html += `<div class="number" aria-label="Número ${num} pendiente">${num}</div>`;
     }
   }
   grid.innerHTML = html;
 }
 
+function trapFocus(e: KeyboardEvent): void {
+  const overlay = $('modal-overlay');
+  if (overlay.classList.contains('hidden')) return;
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    closeResetModal();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+
+  const focusable = overlay.querySelectorAll<HTMLElement>(
+    'button, input, [tabindex]:not([tabindex="-1"])',
+  );
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (!first || !last) return;
+
+  if (!overlay.contains(document.activeElement)) {
+    e.preventDefault();
+    first.focus();
+    return;
+  }
+
+  if (e.shiftKey) {
+    if (document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    }
+  } else {
+    if (document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('btn-draw')!.addEventListener('click', drawNumber);
-  document.getElementById('btn-reset')!.addEventListener('click', resetGame);
-  document.getElementById('btn-modal-confirm')!.addEventListener('click', confirmReset);
-  document
-    .getElementById('btn-modal-cancel')!
-    .addEventListener('click', closeResetModal);
-  document.getElementById('modal-overlay')!.addEventListener('click', (e) => {
+  $btn('btn-draw').addEventListener('click', handleDrawClick);
+  $btn('btn-reset').addEventListener('click', openResetModal);
+  $btn('btn-modal-confirm').addEventListener('click', handleConfirmReset);
+  $btn('btn-modal-cancel').addEventListener('click', closeResetModal);
+  $btn('btn-new-equation').addEventListener('click', handleNewEquation);
+  $('modal-overlay').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeResetModal();
   });
-  document.getElementById('equation-answer')!.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') confirmReset();
-    if (e.key === 'Escape') closeResetModal();
+  $inp('equation-answer').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleConfirmReset();
+    }
   });
-  render();
+  document.addEventListener('keydown', trapFocus);
+  render(loadState());
 });

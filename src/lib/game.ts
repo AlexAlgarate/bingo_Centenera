@@ -27,9 +27,10 @@ export function isGameOver(state: BingoState): boolean {
 }
 
 export function getRemainingNumbers(state: BingoState): number[] {
+  const drawn = new Set(state.drawnNumbers);
   const remaining: number[] = [];
   for (let i = 1; i <= TOTAL_NUMBERS; i++) {
-    if (!state.drawnNumbers.includes(i)) remaining.push(i);
+    if (!drawn.has(i)) remaining.push(i);
   }
   return remaining;
 }

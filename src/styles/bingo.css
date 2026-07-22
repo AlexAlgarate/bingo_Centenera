@@ -1,3 +1,11 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.hidden {
+  display: none !important;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   background-color: #f3f4f6;
@@ -8,14 +16,13 @@ body {
   max-width: 1140px;
   margin: 0 auto;
   text-align: center;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
 h1 {
-  margin-bottom: 1rem;
+  margin: 1rem 0 0;
 }
 
 .controls {
@@ -33,6 +40,11 @@ h1 {
   display: inline-block;
 }
 
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-draw {
   min-width: 220px;
   padding: 1rem 1.75rem;
@@ -42,10 +54,9 @@ h1 {
 .btn-primary {
   background-color: #22c55e;
   color: white;
-  margin-right: 0.5rem;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: #16a34a;
 }
 
@@ -54,12 +65,11 @@ h1 {
   color: white;
 }
 
-.btn-danger:hover {
+.btn-danger:hover:not(:disabled) {
   background-color: #dc2626;
 }
 
 .grid-numbers {
-  box-sizing: border-box;
   max-width: 768px;
   width: min(100%, calc(100% - 2rem));
   margin: 0 auto;
@@ -82,6 +92,7 @@ h1 {
     width: calc(100% - 2rem);
   }
 }
+
 .bingo-ball {
   width: 200px;
   height: 200px;
@@ -92,13 +103,19 @@ h1 {
   justify-content: center;
   font-size: 5rem;
   font-weight: bold;
-  color: #007bff;
+  color: #0056b3;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
   margin: 0 auto 1rem;
 }
 
 .spin {
   animation: reveal 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
 }
 
 @keyframes reveal {
@@ -135,7 +152,6 @@ h1 {
 }
 
 .number-grid {
-  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0.6rem;
@@ -208,6 +224,19 @@ h1 {
   border-color: #22c55e;
 }
 
+.modal-input:focus-visible {
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
+}
+
+.modal-input.error {
+  border-color: #ef4444;
+}
+
+.modal-input.error:focus {
+  border-color: #ef4444;
+}
+
 .equation-error {
   color: #ef4444;
   font-weight: 700;
@@ -227,4 +256,43 @@ h1 {
 
 .modal-actions .btn {
   min-width: 100px;
+}
+
+.game-over-message {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ef4444;
+  margin: 1rem 0;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0.25rem;
+  color: #666;
+  border-radius: 0.25rem;
+}
+
+.btn-icon:hover {
+  color: #111;
+  background: #eee;
+}
+
+.btn-icon:focus-visible {
+  outline: 2px solid #22c55e;
+  outline-offset: 2px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-header h3 {
+  margin: 0;
 }
