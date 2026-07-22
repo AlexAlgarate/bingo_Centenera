@@ -3,65 +3,47 @@ export interface Equation {
   answer: number;
 }
 
-export const generateEquation = (): Equation => {
-  const useSimpleEquation = Math.random() < 0.35;
-  return useSimpleEquation ? generateSimpleEquation() : generateTwoStepEquation();
-};
+const randomInteger = (minimum: number, maximum: number): number =>
+  Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+
+export const generateEquation = (): Equation =>
+  Math.random() < 0.35 ? generateSimpleEquation() : generateTwoStepEquation();
 
 const generateSimpleEquation = (): Equation => {
-  const firstNumber = Math.floor(Math.random() * 40) + 3;
-  const secondNumber = Math.floor(Math.random() * 25) + 2;
-  const operatorIndex = Math.floor(Math.random() * 3);
-  const operatorSymbols = ['+', '−', '·'];
-  const operator = operatorSymbols[operatorIndex];
-  let resultValue: number;
-  if (operator === '+') resultValue = firstNumber + secondNumber;
-  else if (operator === '−') {
-    resultValue = firstNumber > secondNumber
-      ? firstNumber - secondNumber
-      : secondNumber - firstNumber;
-  } else resultValue = firstNumber * secondNumber;
-  const hideVariableOnLeft = Math.random() < 0.5;
-  if (operator === '−') {
-    if (firstNumber > secondNumber) {
-      return {
-        answer: hideVariableOnLeft ? firstNumber : secondNumber,
-        text: hideVariableOnLeft
-          ? `x − ${secondNumber} = ${resultValue}`
-          : `${firstNumber} − x = ${resultValue}`,
-      };
-    } else {
-      return {
-        answer: hideVariableOnLeft ? secondNumber : firstNumber,
-        text: hideVariableOnLeft
-          ? `x − ${firstNumber} = ${resultValue}`
-          : `${secondNumber} − x = ${resultValue}`,
-      };
-    }
-  } else {
-    return {
-      answer: hideVariableOnLeft ? firstNumber : secondNumber,
-      text: hideVariableOnLeft
-        ? `x ${operator} ${secondNumber} = ${resultValue}`
-        : `${firstNumber} ${operator} x = ${resultValue}`,
-    };
-  }
+  const firstNumber = randomInteger(3, 42);
+  const secondNumber = randomInteger(2, 26);
+  const operator = ['+', '−', '*'][randomInteger(0, 2)];
+  const variableOnLeft = Math.random() < 0.5;
+  const [leftNumber, rightNumber] = operator === '−' && firstNumber < secondNumber
+    ? [secondNumber, firstNumber]
+    : [firstNumber, secondNumber];
+  const resultValue = operator === '+'
+    ? leftNumber + rightNumber
+    : operator === '−'
+      ? leftNumber - rightNumber
+      : leftNumber * rightNumber;
+  const leftOperand = variableOnLeft ? 'x' : leftNumber;
+  const rightOperand = variableOnLeft ? rightNumber : 'x';
+
+  return {
+    answer: variableOnLeft ? leftNumber : rightNumber,
+    text: `${leftOperand} ${operator} ${rightOperand} = ${resultValue}`,
+  };
 };
 
 const generateTwoStepEquation = (): Equation => {
-  const multiplier = Math.floor(Math.random() * 8) + 2;
-  const unknownValue = Math.floor(Math.random() * 25) + 2;
+  const multiplier = randomInteger(2, 9);
+  const unknownValue = randomInteger(2, 26);
   const useAddition = Math.random() < 0.5;
-  let constantValue: number;
-  let resultValue: number;
-  if (useAddition) {
-    constantValue = Math.floor(Math.random() * 40) + 1;
-    resultValue = multiplier * unknownValue + constantValue;
-  } else {
-    constantValue = Math.floor(Math.random() * (multiplier * unknownValue - 1)) + 1;
-    resultValue = multiplier * unknownValue - constantValue;
-  }
+  const product = multiplier * unknownValue;
+  const constantValue = useAddition
+    ? randomInteger(1, 40)
+    : randomInteger(1, product - 1);
   const operator = useAddition ? '+' : '−';
+  const resultValue = useAddition
+    ? product + constantValue
+    : product - constantValue;
+
   return {
     answer: unknownValue,
     text: `${multiplier}x ${operator} ${constantValue} = ${resultValue}`,
