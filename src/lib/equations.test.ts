@@ -52,7 +52,7 @@ describe('generateEquation', () => {
   });
 });
 
-function evaluateSimpleExpression(expr: string): number {
+const evaluateSimpleExpression = (expr: string): number => {
   let normalized = expr.replace(/(\d)x/g, '$1*x');
   const tokens = normalized
     .split(/([+−·*])/)
@@ -67,4 +67,4 @@ function evaluateSimpleExpression(expr: string): number {
     else if (op === '·' || op === '*') result *= num;
   }
   return result;
-}
+};

@@ -9,25 +9,25 @@ import { generateEquation } from '../lib/equations';
 import type { Equation } from '../lib/equations';
 import { loadState, saveState } from '../lib/storage';
 
-function $(id: string): HTMLElement {
+const $ = (id: string): HTMLElement => {
   const el = document.getElementById(id);
   if (!el) throw new Error(`Element #${id} not found`);
   return el;
-}
+};
 
-function $btn(id: string): HTMLButtonElement {
+const $btn = (id: string): HTMLButtonElement => {
   return $(id) as HTMLButtonElement;
-}
+};
 
-function $inp(id: string): HTMLInputElement {
+const $inp = (id: string): HTMLInputElement => {
   return $(id) as HTMLInputElement;
-}
+};
 
 let currentEquation: Equation | null = null;
 let previousFocus: HTMLElement | null = null;
 let isDrawing = false;
 
-function handleDrawClick(): void {
+const handleDrawClick = (): void => {
   if (isDrawing) return;
   isDrawing = true;
 
@@ -46,9 +46,9 @@ function handleDrawClick(): void {
     isDrawing = false;
     $btn('btn-draw').disabled = isGameOver(loadState());
   }, 300);
-}
+};
 
-function openResetModal(): void {
+const openResetModal = (): void => {
   previousFocus = document.activeElement as HTMLElement;
   const overlay = $('modal-overlay');
   const eq = generateEquation();
@@ -61,16 +61,16 @@ function openResetModal(): void {
   $('equation-error').classList.add('hidden');
   overlay.classList.remove('hidden');
   input.focus();
-}
+};
 
-function closeResetModal(): void {
+const closeResetModal = (): void => {
   $('modal-overlay').classList.add('hidden');
   currentEquation = null;
   previousFocus?.focus();
   previousFocus = null;
-}
+};
 
-function handleConfirmReset(): void {
+const handleConfirmReset = (): void => {
   const input = $inp('equation-answer');
   const error = $('equation-error');
 
@@ -92,9 +92,9 @@ function handleConfirmReset(): void {
   const newState = createInitialState();
   saveState(newState);
   render(newState);
-}
+};
 
-function handleNewEquation(): void {
+const handleNewEquation = (): void => {
   const eq = generateEquation();
   currentEquation = eq;
   $('equation').textContent = eq.text;
@@ -104,16 +104,16 @@ function handleNewEquation(): void {
   input.setAttribute('aria-invalid', 'false');
   $('equation-error').classList.add('hidden');
   input.focus();
-}
+};
 
-function triggerAnimation(): void {
+const triggerAnimation = (): void => {
   const ball = $('ball');
   ball.classList.remove('spin');
   void ball.offsetWidth;
   ball.classList.add('spin');
-}
+};
 
-function render(state: BingoState): void {
+const render = (state: BingoState): void => {
   const ball = $('ball');
   const btnDraw = $btn('btn-draw');
   const drawnList = $('drawn-list');
@@ -150,9 +150,9 @@ function render(state: BingoState): void {
     }
   }
   grid.innerHTML = html;
-}
+};
 
-function trapFocus(e: KeyboardEvent): void {
+const trapFocus = (e: KeyboardEvent): void => {
   const overlay = $('modal-overlay');
   if (overlay.classList.contains('hidden')) return;
 
@@ -187,7 +187,7 @@ function trapFocus(e: KeyboardEvent): void {
       first.focus();
     }
   }
-}
+};
 
 document.addEventListener('DOMContentLoaded', () => {
   $btn('btn-draw').addEventListener('click', handleDrawClick);

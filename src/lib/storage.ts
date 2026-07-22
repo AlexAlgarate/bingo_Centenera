@@ -3,7 +3,7 @@ import { createInitialState, TOTAL_NUMBERS } from './game';
 
 const STORAGE_KEY = 'bingo-state';
 
-function isValidState(data: unknown): data is BingoState {
+const isValidState = (data: unknown): data is BingoState => {
   if (!data || typeof data !== 'object') return false;
   const s = data as Record<string, unknown>;
   if (!Array.isArray(s.drawnNumbers)) return false;
@@ -14,9 +14,9 @@ function isValidState(data: unknown): data is BingoState {
   if (s.drawnNumbers.length > 0 && typeof s.lastNumber !== 'number') return false;
   if (typeof s.lastNumber === 'number' && !s.drawnNumbers.includes(s.lastNumber)) return false;
   return true;
-}
+};
 
-export function loadState(): BingoState {
+export const loadState = (): BingoState => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -26,12 +26,12 @@ export function loadState(): BingoState {
   } catch {
   }
   return createInitialState();
-}
+};
 
-export function saveState(state: BingoState): void {
+export const saveState = (state: BingoState): void => {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch {
     // La aplicación puede seguir funcionando aunque el almacenamiento no esté disponible.
   }
-}
+};
