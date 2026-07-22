@@ -186,12 +186,36 @@ const trapFocus = (e: KeyboardEvent): void => {
   }
 };
 
+// Theme Management
+const initializeTheme = (): void => {
+  const stored = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = stored || (prefersDark ? 'dark' : 'light');
+  applyTheme(theme);
+};
+
+const applyTheme = (theme: 'dark' | 'light'): void => {
+  if (theme === 'light') {
+    document.body.classList.add('light-mode');
+  } else {
+    document.body.classList.remove('light-mode');
+  }
+  localStorage.setItem('theme', theme);
+};
+
+const toggleTheme = (): void => {
+  const isDarkMode = !document.body.classList.contains('light-mode');
+  applyTheme(isDarkMode ? 'light' : 'dark');
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+  initializeTheme();
   $btn('btn-draw').addEventListener('click', handleDrawClick);
   $btn('btn-reset').addEventListener('click', openResetModal);
   $btn('btn-modal-confirm').addEventListener('click', handleConfirmReset);
   $btn('btn-modal-cancel').addEventListener('click', closeResetModal);
   $btn('btn-new-equation').addEventListener('click', handleNewEquation);
+  $btn('theme-toggle').addEventListener('click', toggleTheme);
   $('modal-overlay').addEventListener('click', (e) => {
     if (e.target === e.currentTarget) closeResetModal();
   });
