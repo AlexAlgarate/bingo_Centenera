@@ -135,8 +135,8 @@ const render = (state: BingoState): void => {
   let html = '';
   const sorted = [...state.drawnNumbers].sort((a: number, b: number) => a - b);
   for (const num of sorted) {
-    const latestClass = num === state.lastNumber ? ' drawn' : '';
-    html += `<span class="number${latestClass}" aria-label="Número ${num}">${num}</span>`;
+    const latestClass = num === state.lastNumber ? ' latest' : '';
+    html += `<span class="number drawn${latestClass}" aria-label="Número ${num}">${num}</span>`;
   }
   drawnList.innerHTML = html;
 

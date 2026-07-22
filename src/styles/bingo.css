@@ -10,8 +10,10 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: #f3f4f6;
+  background-color: #111827;
+  color: #f9fafb;
   margin: 0;
+  color-scheme: dark;
 }
 
 .container {
@@ -80,7 +82,7 @@ h1 {
   width: min(100%, calc(100% - 2rem));
   margin: 0 auto;
   padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.95);
+  background: #1f2937;
   border-radius: 1rem;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   display: flex;
@@ -102,7 +104,7 @@ h1 {
 .bingo-ball {
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle at 30% 30%, #fff, #ccc);
+  background: radial-gradient(circle at 30% 30%, #f9fafb, #9ca3af);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -153,9 +155,9 @@ h1 {
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
-  background-color: rgb(156, 163, 175);
-  box-shadow: 3px 4px 5px rgba(156, 163, 175, 0.6);
-  color: white;
+  background-color: #374151;
+  box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.35);
+  color: #f9fafb;
 }
 
 .number-grid {
@@ -167,14 +169,14 @@ h1 {
 }
 
 .drawn {
-  background-color: rgba(8, 206, 81, 0.6);
-  box-shadow: 3px 4px 5px rgba(200, 210, 229, 0.9);
-  color: rgb(0, 0, 0);
+  background-color: #2563eb;
+  box-shadow: 3px 4px 5px rgba(0, 0, 0, 0.35);
+  color: #eff6ff;
 }
 
-.last-number {
-  background-color: rgb(8, 206, 81);
-  color: white;
+.drawn.latest {
+  background-color: #f59e0b;
+  color: #111827;
 }
 
 .reset-container {
@@ -198,7 +200,7 @@ h1 {
 }
 
 .modal {
-  background: white;
+  background: #1f2937;
   border-radius: 1rem;
   padding: 2rem;
   max-width: 400px;
@@ -213,13 +215,13 @@ h1 {
 
 .modal p {
   margin: 0 0 1rem;
-  color: #555;
+  color: #cbd5e1;
 }
 
 .equation {
   font-size: 2rem;
   font-weight: 700;
-  color: #111;
+  color: #f9fafb;
   margin: 1rem 0;
 }
 
@@ -228,19 +230,21 @@ h1 {
   padding: 0.5rem;
   width: 120px;
   text-align: center;
-  border: 2px solid #ccc;
+  border: 2px solid #4b5563;
+  background: #111827;
+  color: #f9fafb;
   border-radius: 0.5rem;
   outline: none;
 }
 
-.modal-input:focus {
+/* .modal-input:focus {
   border-color: #22c55e;
 }
 
 .modal-input:focus-visible {
   outline: 2px solid #22c55e;
   outline-offset: 2px;
-}
+} */
 
 .modal-input.error {
   border-color: #ef4444;
@@ -284,13 +288,13 @@ h1 {
   cursor: pointer;
   font-size: 1.25rem;
   padding: 0.25rem;
-  color: #666;
+  color: #cbd5e1;
   border-radius: 0.25rem;
 }
 
 .btn-icon:hover {
-  color: #111;
-  background: #eee;
+  color: #f9fafb;
+  background: #374151;
 }
 
 .btn-icon:focus-visible {
